@@ -1,0 +1,12 @@
+<img
+  [src]="img"
+  alt=""
+  *ngIf="img; else notFoundImage"
+  (error)="imgError()"
+  (load)="imgLoaded()"
+/>
+<ng-template #notFoundImage>
+  <img [src]="imageDefault" alt="" width="200" />
+</ng-template>
+
+

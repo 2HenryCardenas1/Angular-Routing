@@ -1,0 +1,15 @@
+<p>Total {{total}}</p>
+<p>
+  today  :  {{today | date:'YYYY-dd-MM'}}
+</p>
+<p>
+  TimeAgo  :  {{today | timeAgo}}
+</p>
+<div class="products-grid">
+    <app-product
+      *ngFor="let product of products"
+      [product]="product"
+      (addedProduct)="onAddToCart($event)"
+    ></app-product>
+   
+  </div>
