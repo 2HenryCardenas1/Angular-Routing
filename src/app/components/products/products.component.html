@@ -1,15 +1,29 @@
-<p>Total {{total}}</p>
-<p>
-  today  :  {{today | date:'YYYY-dd-MM'}}
-</p>
-<p>
-  TimeAgo  :  {{today | timeAgo}}
-</p>
+<button (click)="createProduct()">Create</button>
 <div class="products-grid">
     <app-product
       *ngFor="let product of products"
       [product]="product"
       (addedProduct)="onAddToCart($event)"
+      (onShowDetail) = "onShowProductDetail($event)"
     ></app-product>
-   
+</div>
+
+<div class="product-detail" [class.active]="showProductDetail">
+  <div *ngIf="productChosen">
+   <button (click)="toggleProductDetail()">Close</button> 
+   <h1>{{productChosen.title}}</h1>
+   <swiper
+      [slidesPerView]="1"
+      [spaceBetween]="50"
+      
+    >
+      <ng-template swiperSlide *ngFor="let image of productChosen.images">
+        <img [src]="image" alt="">
+      </ng-template>
+
+    </swiper>
+    <p>{{productChosen.description}}</p>
+    <button (click)="updateProduct()">Edit</button>
+    <button type="button" (click)="deleteProduct()">Delete</button>
   </div>
+</div>

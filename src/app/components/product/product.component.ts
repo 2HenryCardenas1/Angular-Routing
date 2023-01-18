@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { Product } from '../../models/product.model';
+
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
@@ -8,19 +9,35 @@ import { Product } from '../../models/product.model';
 })
 export class ProductComponent {
 
+  constructor(
+
+  ) { }
+
+  selectedProduct = true;
+
 
   @Input() product: Product = {
-    id: 0,
+    id: '',
     title: '',
     price: 0,
-    image: '',
+    images: [],
     description: '',
-    category: ''
+    category: {
+      id: '',
+      name: '',
+      typeImg: ''
+    }
   }
   @Output() addedProduct = new EventEmitter<Product>();
+  @Output() onShowDetail = new EventEmitter<string>();
 
   onAddToCart() {
     this.addedProduct.emit(this.product);
+  }
+
+  onShowProductDetail() {
+    //Send event child to parent
+    this.onShowDetail.emit(this.product.id.toString());
   }
 
 
