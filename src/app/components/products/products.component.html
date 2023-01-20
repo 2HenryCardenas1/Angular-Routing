@@ -6,6 +6,8 @@
       (addedProduct)="onAddToCart($event)"
       (onShowDetail) = "onShowProductDetail($event)"
     ></app-product>
+
+    <button (click)="loadMore()">Load more</button>
 </div>
 
 <div class="product-detail" [class.active]="showProductDetail">
