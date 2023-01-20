@@ -1,8 +1,10 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { retry } from 'rxjs';
+import { throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { CreateProductDTO, Product, UpdateProductDTO } from '../models/product.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,17 +19,26 @@ export class ProductsService {
   getAllProducts(limit?: number, offset?: number) {
     let params = new HttpParams();
     if (limit && offset) {
-      params = params.set('limit', limit)
-      params = params.set('offset', offset)
+      params = params.set('limit', limit);
+      params = params.set('offset', limit);
     }
-
     return this.http.get<Product[]>(this.apiUrl, { params })
       .pipe(
-        retry(3));
+        retry(3)
+      );
   }
 
   getProductById(id: string) {
     return this.http.get<Product>(`${this.apiUrl}/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status == 404) {
+            return throwError(() =>
+              'Product not found ') // this is the personalized error message
+          }
+          return throwError(() => 'Something went wrong')
+        })
+      )
   }
 
   getProductsByPage(limit: number, offset: number) {
@@ -37,7 +48,8 @@ export class ProductsService {
           limit,
           offset
         }
-      });
+      })
+
   }
 
   createProduct(product: CreateProductDTO) {

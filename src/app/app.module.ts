@@ -14,7 +14,6 @@ import { HighlightDirective } from './directives/highlight.directive';
 import { NumbersLettersPipe } from './pipes/numbers-letters.pipe';
 import { ReversePipe } from './pipes/reverse.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
-
 @NgModule({
   declarations: [
     AppComponent,

@@ -9,7 +9,8 @@ export interface Product {
     price: number,
     images: string[],
     description: string,
-    category: Category
+    category: Category,
+    taxes?: number,
 }
 
 //Omit is a utility type that constructs a type by picking all properties from T and then removing K.
