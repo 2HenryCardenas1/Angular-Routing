@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { switchMap, zip } from 'rxjs';
 import Swal from 'sweetalert2';
 import { CreateProductDTO, Product, UpdateProductDTO } from '../../models/product.model';
 import { ProductsService } from '../../services/products.service';
@@ -82,6 +83,25 @@ export class ProductsComponent implements OnInit {
 
   }
 
+
+  readAndUpdateProduct(id: string) {
+    this.productsService.getProductById(id)
+      .pipe(
+        switchMap((product) => this.productsService.updateProduct(product.id, { title: 'New Product change' })
+        )
+      ).subscribe(data => {
+        console.log(data);
+      }
+      );
+    zip(
+      this.productsService.getProductById(id),
+      this.productsService.updateProduct(id, { title: 'New Product change with zip' })
+
+    ).subscribe(data => {
+      const read = data[0];
+      const update = data[1];
+    })
+  }
   createProduct() {
     const newProduct: CreateProductDTO = {
       title: 'New Product',
@@ -127,5 +147,7 @@ export class ProductsComponent implements OnInit {
         this.offset += this.limit;
       })
   }
+
+
 
 } 
