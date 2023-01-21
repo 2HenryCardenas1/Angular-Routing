@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -14,6 +14,8 @@ import { HighlightDirective } from './directives/highlight.directive';
 import { NumbersLettersPipe } from './pipes/numbers-letters.pipe';
 import { ReversePipe } from './pipes/reverse.pipe';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
+
+import { TimeInterceptor } from './interceptors/time.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,9 +33,14 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    SwiperModule
+    SwiperModule,
+
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, useClass: TimeInterceptor, multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
