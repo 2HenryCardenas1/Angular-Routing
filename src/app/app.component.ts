@@ -10,11 +10,26 @@ import { UsersService } from './services/users.service';
 export class AppComponent {
   imageParent = '';
   showImage = true;
+  imgRta = '';
 
   constructor(
     private usersService: UsersService,
     private filesService: FilesService
   ) { }
+
+  onUpload(event: Event) {
+    // read event 
+    const element = event.target as HTMLInputElement;
+    const file = element.files?.item(0);
+    if (file) {
+      this.filesService.uploadFiles(file)
+        .subscribe({
+          next: (response) => {
+            this.imgRta = response.location;
+          }
+        })
+    }
+  }
 
   createUser() {
     this.usersService.create({
