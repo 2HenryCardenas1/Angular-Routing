@@ -37,8 +37,8 @@
         </nav>
         <div class="info">
             <div class="account">
-                <button *ngIf="!token; else else_block" (click)="login()">Login</button>
-                <ng-template #else_block>{{ userDetail.email }}</ng-template>
+                <button *ngIf="!userDetail; else else_block" (click)="login()">Login</button>
+                <ng-template #else_block>{{ userDetail?.email }}</ng-template>
             </div>
             <div class="cart">
                 <a href="">
