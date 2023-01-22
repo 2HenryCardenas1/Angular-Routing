@@ -1,33 +1,26 @@
-<button (click)="createProduct()">Create</button>
-<button (click)="onShowProductDetail('213213')">Not fount</button>
-<div class="products-grid">
-    <app-product
-      *ngFor="let product of products"
-      [product]="product"
-      (addedProduct)="onAddToCart($event)"
-      (onShowDetail) = "onShowProductDetail($event)"
-    ></app-product>
-
-    <button (click)="loadMore()">Load more</button>
+<div class="products--grid">
+  <app-product
+    [product]="product"
+    *ngFor="let product of products"
+    (addedProduct)="onAddToShoppingCart($event)"
+    (showProduct)="onShowDetail($event)"
+  ></app-product>
+  <button (click)="loadMore()">Load more</button>
 </div>
-
 <div class="product-detail" [class.active]="showProductDetail">
   {{ statusDetail }}
   <div *ngIf="productChosen">
-   <button (click)="toggleProductDetail()">Close</button> 
-   <h1>{{productChosen.title}}</h1>
-   <swiper
+    <button (click)="toggleProductDetail()">Close</button>
+    <h1>{{ productChosen.title }}</h1>
+    <swiper
       [slidesPerView]="1"
-      [spaceBetween]="50"
-      
     >
-      <ng-template swiperSlide *ngFor="let image of productChosen.images">
-        <img [src]="image" alt="">
+      <ng-template swiperSlide *ngFor="let img of productChosen.images">
+        <img [src]="img" alt="">
       </ng-template>
-
     </swiper>
-    <p>{{productChosen.description}}</p>
-    <button (click)="updateProduct()">Edit</button>
-    <button type="button" (click)="deleteProduct()">Delete</button>
+    <p>{{ productChosen.description }}</p>
+    <button (click)="updateProduct()">editar</button>
+    <button (click)="deleteProduct()">delete</button>
   </div>
 </div>

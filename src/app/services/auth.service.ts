@@ -1,42 +1,39 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { switchMap, tap } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { Auth } from '../models/auth.model';
-import { User } from '../models/users.model';
-import { TokenService } from './token.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { switchMap, tap } from 'rxjs/operators';
+
+import { environment } from './../../environments/environment';
+import { Auth } from './../models/auth.model';
+import { User } from './../models/user.model';
+import { TokenService } from './../services/token.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiUrl = `${environment.API_URL}/api/auth`
+  private apiUrl = `${environment.API_URL}/api/auth`;
+
   constructor(
     private http: HttpClient,
-    private TokenService: TokenService) { }
+    private tokenService: TokenService
+  ) { }
 
-  //save token
   login(email: string, password: string) {
-    return this.http.post<Auth>(`${this.apiUrl}/login`, { email, password })
-      .pipe(
-        tap((response) => {
-          this.TokenService.saveToken(response.access_token);
-        })
-      );
+    return this.http.post<Auth>(`${this.apiUrl}/login`, {email, password})
+    .pipe(
+      tap(response => this.tokenService.saveToken(response.access_token))
+    );
   }
 
-  profile() {
+  getProfile() {
     return this.http.get<User>(`${this.apiUrl}/profile`);
   }
 
-  //login and profile details
-  loginAndProfile(email: string, password: string) {
+  loginAndGet(email: string, password: string) {
     return this.login(email, password)
-      .pipe(
-        switchMap(() => {
-          return this.profile();
-        }
-        )
-      )
+    .pipe(
+      switchMap(() => this.getProfile()),
+    )
   }
 }

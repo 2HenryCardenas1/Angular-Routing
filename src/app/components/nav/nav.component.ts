@@ -1,28 +1,29 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../models/users.model';
+
+import { StoreService } from '../../services/store.service'
 import { AuthService } from '../../services/auth.service';
-import { StoreService } from '../../services/store.service';
+import { User } from '../../models/user.model';
+
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
+
   activeMenu = false;
   counter = 0;
+  profile: User | null = null;
 
-
-  userDetail: User | null = null;
   constructor(
     private storeService: StoreService,
-    private authService: AuthService
-  ) {
+    private authService: AuthService,
+  ) { }
 
-  }
-  ngOnInit() {
+  ngOnInit(): void {
     this.storeService.myCart$.subscribe(products => {
       this.counter = products.length;
-    })
+    });
   }
 
   toggleMenu() {
@@ -30,14 +31,10 @@ export class NavComponent implements OnInit {
   }
 
   login() {
-    this.authService.loginAndProfile('test@test.com', '123456')
-      .subscribe({
-        next: (response) => {
-          console.log(response)
-          this.userDetail = response;
-        }
-      })
+    this.authService.loginAndGet('john@mail.com', 'changeme')
+    .subscribe(user => {
+      this.profile = user;
+    });
   }
-
 
 }

@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -6,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class TokenService {
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
 
   saveToken(token: string) {
     localStorage.setItem('token', token);
@@ -16,5 +15,4 @@ export class TokenService {
     const token = localStorage.getItem('token');
     return token;
   }
-
 }
