@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-api": {
+    "angular-routing": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
             "allowedCommonJsDependencies": [
               "sweetalert2"
             ],
-            "outputPath": "dist/angular-api",
+            "outputPath": "dist/angular-routing",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular-api:build:production"
+              "browserTarget": "angular-routing:build:production"
             },
             "development": {
-              "browserTarget": "angular-api:build:development"
+              "browserTarget": "angular-routing:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-api:build"
+            "browserTarget": "angular-routing:build"
           }
         },
         "test": {
