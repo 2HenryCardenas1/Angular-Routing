@@ -1,29 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import Swal from 'sweetalert2';
 
 import {
-  Product,
-  CreateProductDTO,
-  UpdateProductDTO,
+  CreateProductDTO, Product, UpdateProductDTO
 } from '../../models/product.model';
 
-import { StoreService } from '../../services/store.service';
 import { ProductsService } from '../../services/products.service';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent {
   myShoppingCart: Product[] = [];
   total = 0;
-  products: Product[] = [];
+
   showProductDetail = false;
   productChosen: Product | null = null;
   limit = 10;
   offset = 0;
   statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
+
+  @Input() products: Product[] = [];
+  @Output() onLoadMore = new EventEmitter();
 
   constructor(
     private storeService: StoreService,
@@ -32,11 +33,8 @@ export class ProductsComponent implements OnInit {
     this.myShoppingCart = this.storeService.getShoppingCart();
   }
 
-  ngOnInit(): void {
-    this.productsService.getAll(10, 0).subscribe((data) => {
-      this.products = data;
-      this.offset += this.limit;
-    });
+  loadMore() {
+    this.onLoadMore.emit();
   }
 
   onAddToShoppingCart(product: Product) {
@@ -50,15 +48,29 @@ export class ProductsComponent implements OnInit {
 
   onShowDetail(id: string) {
     this.statusDetail = 'loading';
-    this.toggleProductDetail();
+
+    if (this.productChosen != null) {
+      if (this.productChosen.id != id && this.showProductDetail == true) {
+        this.showProductDetail = !this.showProductDetail;
+      }
+    }
+
     this.productsService.getOne(id).subscribe(
-      (data) => {
-        this.productChosen = data;
-        this.statusDetail = 'success';
-      },
-      (errorMsg) => {
-        window.alert(errorMsg);
-        this.statusDetail = 'error';
+      {
+        next: (data) => {
+          this.showProductDetail = !this.showProductDetail;
+          this.productChosen = data;
+          this.statusDetail = 'success';
+        },
+        error: error => {
+          this.statusDetail = 'error';
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: error,
+            confirmButtonText: 'Ok'
+          })
+        }
       }
     );
   }
@@ -105,10 +117,5 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  loadMore() {
-    this.productsService.getAll(this.limit, this.offset).subscribe((data) => {
-      this.products = this.products.concat(data);
-      this.offset += this.limit;
-    });
-  }
+
 }

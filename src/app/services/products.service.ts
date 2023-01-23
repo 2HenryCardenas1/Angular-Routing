@@ -1,18 +1,18 @@
+import { HttpClient, HttpErrorResponse, HttpParams, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { retry, catchError, map } from 'rxjs/operators';
 import { throwError, zip } from 'rxjs';
+import { catchError, map, retry } from 'rxjs/operators';
 
-import { Product, CreateProductDTO, UpdateProductDTO } from './../models/product.model';
-import { checkTime } from './../interceptors/time.interceptor';
 import { environment } from './../../environments/environment';
+import { checkTime } from './../interceptors/time.interceptor';
+import { CreateProductDTO, Product, UpdateProductDTO } from './../models/product.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
 
-  private apiUrl = `${environment.API_URL}/api/products`;
+  private apiUrl = `${environment.API_URL}/api`;
 
   constructor(
     private http: HttpClient
@@ -20,20 +20,31 @@ export class ProductsService {
 
   getAll(limit?: number, offset?: number) {
     let params = new HttpParams();
-    if (limit && offset) {
+    if (limit && offset != null) {
       params = params.set('limit', limit);
-      params = params.set('offset', limit);
+      params = params.set('offset', offset);
     }
-    return this.http.get<Product[]>(this.apiUrl, { params, context: checkTime() })
-    .pipe(
-      retry(3),
-      map(products => products.map(item => {
-        return {
-          ...item,
-          taxes: .19 * item.price
-        }
-      }))
-    );
+    return this.http.get<Product[]>(`${this.apiUrl}/products`, { params, context: checkTime() })
+      .pipe(
+        retry(3),
+        map(products => products.map(item => {
+          return {
+            ...item,
+            taxes: .19 * item.price
+          }
+        }))
+      );
+  }
+
+  getProductsByCategory(category: string, limit?: number, offset?: number) {
+    let params = new HttpParams();
+    if (limit && offset != null) {
+      params = params.set('limit', limit);
+      params = params.set('offset', offset);
+    }
+
+    return this.http.get<Product[]>(`${this.apiUrl}/categories/${category}/products`, { params })
+
   }
 
   fetchReadAndUpdate(id: string, dto: UpdateProductDTO) {
@@ -44,32 +55,32 @@ export class ProductsService {
   }
 
   getOne(id: string) {
-    return this.http.get<Product>(`${this.apiUrl}/${id}`)
-    .pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === HttpStatusCode.Conflict) {
-          return throwError('Algo esta fallando en el server');
-        }
-        if (error.status === HttpStatusCode.NotFound) {
-          return throwError('El producto no existe');
-        }
-        if (error.status === HttpStatusCode.Unauthorized) {
-          return throwError('No estas permitido');
-        }
-        return throwError('Ups algo salio mal');
-      })
-    )
+    return this.http.get<Product>(`${this.apiUrl}/products/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === HttpStatusCode.Conflict) {
+            return throwError(() => 'Algo esta fallando en el server');
+          }
+          if (error.status === HttpStatusCode.NotFound) {
+            return throwError(() => 'El producto no existe');
+          }
+          if (error.status === HttpStatusCode.Unauthorized) {
+            return throwError(() => 'No estas permitido');
+          }
+          return throwError(() => 'Ups algo salio mal');
+        })
+      )
   }
 
   create(dto: CreateProductDTO) {
-    return this.http.post<Product>(this.apiUrl, dto);
+    return this.http.post<Product>(`${this.apiUrl}/products`, dto);
   }
 
   update(id: string, dto: UpdateProductDTO) {
-    return this.http.put<Product>(`${this.apiUrl}/${id}`, dto);
+    return this.http.put<Product>(`${this.apiUrl}/products/${id}`, dto);
   }
 
   delete(id: string) {
-    return this.http.delete<boolean>(`${this.apiUrl}/${id}`);
+    return this.http.delete<boolean>(`${this.apiUrl}/products/${id}`);
   }
 }
