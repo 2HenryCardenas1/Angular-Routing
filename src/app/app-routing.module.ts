@@ -31,10 +31,7 @@ const routes: Routes = [
     path: 'mycart',
     component: MycartComponent
   },
-  {
-    path: 'not-found',
-    component: NotFoundComponent
-  },
+
   {
     path: 'profile',
     component: ProfileComponent
@@ -46,7 +43,12 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
-  }
+  },
+  // ** is a wildcard, it means that if the path is not found, it will redirect to the NotFoundComponent
+  {
+    path: '**',
+    component: NotFoundComponent
+  },
 ];
 
 @NgModule({
