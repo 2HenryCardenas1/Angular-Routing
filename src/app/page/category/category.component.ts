@@ -17,7 +17,7 @@ export class CategoryComponent {
 
   constructor(private route: ActivatedRoute, private productsService: ProductsService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.paramMap
       .pipe(
         switchMap(params => {
@@ -32,13 +32,13 @@ export class CategoryComponent {
       .subscribe({
         next: (data) => {
           this.products = data;
-          this.offset += this.limit;
+
         }
       })
   }
 
   loadMore() {
-    if (this.categoryId != null) {
+    if (this.categoryId) {
       this.productsService.getProductsByCategory(this.categoryId, this.limit, this.offset).subscribe(
         {
           next: (data) => {
