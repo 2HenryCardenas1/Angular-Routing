@@ -14,17 +14,26 @@ import { StoreService } from '../../services/store.service';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent {
+
+  @Input() products: Product[] = [];
+  @Input()
+  set productId(id: string | null) {
+    if (id) {
+      this.onShowDetail(id);
+    }
+  }
+  @Output() onLoadMore = new EventEmitter();
+
   myShoppingCart: Product[] = [];
   total = 0;
 
   showProductDetail = false;
   productChosen: Product | null = null;
-  limit = 10;
-  offset = 0;
+
   statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
 
-  @Input() products: Product[] = [];
-  @Output() onLoadMore = new EventEmitter();
+
+
 
   constructor(
     private storeService: StoreService,
@@ -48,17 +57,13 @@ export class ProductsComponent {
 
   onShowDetail(id: string) {
     this.statusDetail = 'loading';
-
-    if (this.productChosen != null) {
-      if (this.productChosen.id != id && this.showProductDetail == true) {
-        this.showProductDetail = !this.showProductDetail;
-      }
+    if (!this.showProductDetail) {
+      this.showProductDetail = true;
     }
-
     this.productsService.getOne(id).subscribe(
       {
         next: (data) => {
-          this.showProductDetail = !this.showProductDetail;
+
           this.productChosen = data;
           this.statusDetail = 'success';
         },
