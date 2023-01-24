@@ -14,7 +14,7 @@ export class CategoryComponent {
   limit = 10;
   offset = 0;
   products: Product[] = [];
-
+  productId: string | null = null;
   constructor(private route: ActivatedRoute, private productsService: ProductsService) { }
 
   ngOnInit(): void {
@@ -33,6 +33,15 @@ export class CategoryComponent {
         next: (data) => {
           this.products = data;
 
+        }
+      });
+
+    //send query params to the server
+    this.route.queryParamMap
+      .subscribe({
+        next: (params) => {
+          this.productId = params.get('product');
+          console.log(this.productId);
         }
       })
   }
