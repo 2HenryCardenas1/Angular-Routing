@@ -1,5 +1,5 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { switchMap, tap } from 'rxjs/operators';
 
 import { environment } from './../../environments/environment';
@@ -20,10 +20,10 @@ export class AuthService {
   ) { }
 
   login(email: string, password: string) {
-    return this.http.post<Auth>(`${this.apiUrl}/login`, {email, password})
-    .pipe(
-      tap(response => this.tokenService.saveToken(response.access_token))
-    );
+    return this.http.post<Auth>(`${this.apiUrl}/login`, { email, password })
+      .pipe(
+        tap(response => this.tokenService.saveToken(response.access_token)) // tap is used to force petition or realize side effects
+      );
   }
 
   getProfile() {
@@ -32,8 +32,8 @@ export class AuthService {
 
   loginAndGet(email: string, password: string) {
     return this.login(email, password)
-    .pipe(
-      switchMap(() => this.getProfile()),
-    )
+      .pipe(
+        switchMap(() => this.getProfile()),
+      )
   }
 }

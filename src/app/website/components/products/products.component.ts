@@ -3,10 +3,10 @@ import Swal from 'sweetalert2';
 
 import {
   CreateProductDTO, Product, UpdateProductDTO
-} from '../../models/product.model';
+} from '../../../models/product.model';
 
-import { ProductsService } from '../../services/products.service';
-import { StoreService } from '../../services/store.service';
+import { ProductsService } from '../../../services/products.service';
+import { StoreService } from '../../../services/store.service';
 
 @Component({
   selector: 'app-products',
