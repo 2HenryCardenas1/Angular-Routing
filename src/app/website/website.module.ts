@@ -8,7 +8,7 @@ import { SwiperModule } from 'swiper/angular';
 import { SharedModule } from './../shared/shared.module';
 import { LayoutComponent } from './components/layout/layout.component';
 import { NavComponent } from './components/nav/nav.component';
-import { CategoryComponent } from './page/category/category.component';
+
 import { HomeComponent } from './page/home/home.component';
 import { LoginComponent } from './page/login/login.component';
 import { MycartComponent } from './page/mycart/mycart.component';
@@ -23,7 +23,7 @@ import { WebsiteRoutingModule } from './website-routing.module';
 
     NavComponent,
     HomeComponent,
-    CategoryComponent,
+
     MycartComponent,
     LoginComponent,
     RegisterComponent,
