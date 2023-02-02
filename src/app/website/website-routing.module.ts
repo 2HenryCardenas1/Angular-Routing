@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './../guards/auth.guard';
 import { LayoutComponent } from './components/layout/layout.component';
 import { HomeComponent } from './page/home/home.component';
 import { LoginComponent } from './page/login/login.component';
@@ -8,7 +9,6 @@ import { ProductDetailComponent } from './page/product-detail/product-detail.com
 import { ProfileComponent } from './page/profile/profile.component';
 import { RecoveryComponent } from './page/recovery/recovery.component';
 import { RegisterComponent } from './page/register/register.component';
-
 const routes: Routes = [
   {
     path: '',
@@ -44,7 +44,8 @@ const routes: Routes = [
 
       {
         path: 'profile',
-        component: ProfileComponent
+        component: ProfileComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: 'recovery',
