@@ -9,6 +9,7 @@ import { SharedModule } from './../shared/shared.module';
 import { LayoutComponent } from './components/layout/layout.component';
 import { NavComponent } from './components/nav/nav.component';
 
+import { QuicklinkModule } from 'ngx-quicklink';
 import { HomeComponent } from './page/home/home.component';
 import { LoginComponent } from './page/login/login.component';
 import { MycartComponent } from './page/mycart/mycart.component';
@@ -16,7 +17,6 @@ import { ProductDetailComponent } from './page/product-detail/product-detail.com
 import { ProfileComponent } from './page/profile/profile.component';
 import { RecoveryComponent } from './page/recovery/recovery.component';
 import { RegisterComponent } from './page/register/register.component';
-
 import { WebsiteRoutingModule } from './website-routing.module';
 @NgModule({
   declarations: [
@@ -35,7 +35,8 @@ import { WebsiteRoutingModule } from './website-routing.module';
     CommonModule,
     WebsiteRoutingModule,
     SwiperModule,
-    SharedModule
+    SharedModule,
+    QuicklinkModule
   ]
 })
 export class WebsiteModule { }
