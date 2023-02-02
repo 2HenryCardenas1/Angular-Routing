@@ -1,8 +1,9 @@
 export interface User {
-  id: string;
+  id: number;
   email: string;
   password: string;
   name: string;
+
 }
 
-export interface CreateUserDTO extends Omit<User, 'id'> {}
+export interface CreateUserDTO extends Omit<User, 'id'> { }

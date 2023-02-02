@@ -17,11 +17,11 @@
   <div class="side-menu" [class.active]="activeMenu">
     <button (click)="toggleMenu()">Close</button>
     <ul>
-      <li><a routerLinkActive="active" routerLink="home"  >All</a></li>
+      <li><a routerLinkActive="active" routerLink="home">All</a></li>
       <li *ngFor="let category of categories">
         <a routerLinkActive="active" [routerLink]="['/categories',category.id]">{{category.name}}</a>
       </li>
-     
+
     </ul>
   </div>
 </div>
@@ -32,17 +32,20 @@
         <img src="./assets/svg/logo_yard_sale.svg" alt="logo">
       </a>
       <ul>
-        <li><a  routerLinkActive="active" routerLink="home">All</a></li>
-        <li  *ngFor="let category of categories">
+        <li><a routerLinkActive="active" routerLink="home">All</a></li>
+        <li *ngFor="let category of categories">
           <a routerLinkActive="active" [routerLink]="['/categories',category.id]">{{category.name}}</a>
         </li>
-       
+
       </ul>
     </nav>
     <div class="info">
       <div class="account">
         <button *ngIf="!profile; else elseBlock" (click)="login()">Login</button>
-        <ng-template #elseBlock>{{ profile?.email }}</ng-template>
+        <ng-template #elseBlock>
+          <a routerLink="/profile">{{ profile?.email }}</a>
+          <button (click)="logout()">Logout</button>
+        </ng-template>
       </div>
       <div class="cart">
         <a href="">

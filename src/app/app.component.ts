@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-import { UsersService } from './services/users.service';
 import { FilesService } from './services/files.service';
+import { UsersService } from './services/users.service';
 
 @Component({
   selector: 'app-root',
@@ -14,22 +14,23 @@ export class AppComponent {
   constructor(
     private usersService: UsersService,
     private filesService: FilesService
-  ) {}
+  ) { }
 
   createUser() {
     this.usersService.create({
       name: 'Sebas',
       email: 'sebas@mail.com',
-      password: '1212'
+      password: '1212',
+
     })
-    .subscribe(rta => {
-      console.log(rta);
-    });
+      .subscribe(rta => {
+        console.log(rta);
+      });
   }
 
   downloadPdf() {
     this.filesService.getFile('my.pdf', 'https://young-sands-07814.herokuapp.com/api/files/dummy.pdf', 'application/pdf')
-    .subscribe()
+      .subscribe()
   }
 
   onUpload(event: Event) {
@@ -37,9 +38,9 @@ export class AppComponent {
     const file = element.files?.item(0);
     if (file) {
       this.filesService.uploadFile(file)
-      .subscribe(rta => {
-        this.imgRta = rta.location;
-      });
+        .subscribe(rta => {
+          this.imgRta = rta.location;
+        });
     }
 
   }
