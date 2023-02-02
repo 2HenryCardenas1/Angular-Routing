@@ -24,6 +24,7 @@ import { RecoveryComponent } from './website/page/recovery/recovery.component';
 import { RegisterComponent } from './website/page/register/register.component';
 import { ReversePipe } from './website/pipes/reverse.pipe';
 import { TimeAgoPipe } from './website/pipes/time-ago.pipe';
+import { LayoutComponent } from './website/components/layout/layout.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { TimeAgoPipe } from './website/pipes/time-ago.pipe';
     RegisterComponent,
     RecoveryComponent,
     ProfileComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    LayoutComponent
   ],
   imports: [
     BrowserModule,
