@@ -1,59 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LayoutComponent } from './website/components/layout/layout.component';
-import { CategoryComponent } from './website/page/category/category.component';
-import { HomeComponent } from './website/page/home/home.component';
-import { LoginComponent } from './website/page/login/login.component';
-import { MycartComponent } from './website/page/mycart/mycart.component';
-import { NotFoundComponent } from './website/page/not-found/not-found.component';
-import { ProductDetailComponent } from './website/page/product-detail/product-detail.component';
-import { ProfileComponent } from './website/page/profile/profile.component';
-import { RecoveryComponent } from './website/page/recovery/recovery.component';
-import { RegisterComponent } from './website/page/register/register.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'home',
-        pathMatch: 'full'
-      },
-      {
-        path: 'home',
-        component: HomeComponent
-      },
-      {
-        path: 'categories/:id',
-        component: CategoryComponent
-      },
-      {
-        path: 'product-detail/:id',
-        component: ProductDetailComponent
-      },
-      {
-        path: 'login',
-        component: LoginComponent
-      }, {
-        path: 'mycart',
-        component: MycartComponent
-      },
-
-      {
-        path: 'profile',
-        component: ProfileComponent
-      },
-      {
-        path: 'recovery',
-        component: RecoveryComponent
-      },
-      {
-        path: 'register',
-        component: RegisterComponent
-      }
-    ]
+    loadChildren: () => import('./website/website.module').then(m => m.WebsiteModule)
   },
   {
     path: 'admin',
