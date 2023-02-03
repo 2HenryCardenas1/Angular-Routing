@@ -35,6 +35,7 @@ export class AppComponent implements OnInit {
       name: 'Sebas',
       email: 'sebas@mail.com',
       password: '1212',
+      role: 'admin'
 
     })
       .subscribe(rta => {
